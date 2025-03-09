@@ -1,0 +1,70 @@
+
+
+
+使用流程
+1、编写CMakeLists.txt文件
+2、创建build文件夹
+3、在build文件夹下执行cmake..命令生成makefile文件
+4、执行make命令
+
+
+基本CMakeLists文件命令
+cmake_minimum_required(VERSION 3.20)
+project(APP)
+add_executable(app main.cpp add.cpp)
+
+set的三种用法
+1、创建变量
+set(VAR VALUE)
+2、CMake的宏定义
+set(CMAKE_CXX_STANDARD VALUE)
+3、输出文件路径指定
+set(EXECUTABLE_OUTPUT_PATH ${output_path})
+
+搜索的两种方式
+1、aux_source_directory(${PROJECT_SOURCE_DIR} SRR)      第一个参数是路径 第二个参数是变量
+2、file(GLOB var 路径)三个参数  1GLOB/GLOB_RECURSE仅搜索还是递归搜索 2 变量名称 3搜索文件路径和文件类型
+
+搜索方式1 
+有两个宏
+PROJECT_SOURCE_DIR:     cmake ..后面的点的跟随的路径 就是CMakeLists文件夹所在的路径
+CMAKE_CURRENT_SOURCE_DIR:也是CMakeLists.txt所在的路径
+
+指定头文件路径
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+
+制作动态库或静态库
+动态库.so .dll
+静态库 .lib .a
+
+
+
+发布出去有两个
+一个库文件一个头文件
+
+链接静态库
+cmake_minimum_required(VERSION 3.20)
+project(tes)
+
+file(GLOB SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# 指定路径
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib1)
+link_libraries(calc)        # 链接库的名字
+
+add_executable(app, ${SRC})
+
+
+链接动态库
+cmake_minimum_required(VERSION 3.20)
+project(test)
+file(GLOB SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib2)
+add_executable(app ${SRC})
+target_link_libraries(app calc)     # 参数 谁要链接动态库  要链接的库是什么  这一行放在最后
+
+
+编辑于20250309日
